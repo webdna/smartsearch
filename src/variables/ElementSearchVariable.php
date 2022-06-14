@@ -20,7 +20,6 @@ use craft\elements\Category;
 use craft\elements\User;
 use craft\commerce\elements\Product;
 use yii\base\Behavior;
-use Illuminate\Support\Collection;
 use craft\helpers\StringHelper;
 use craft\helpers\ArrayHelper;
 
@@ -38,9 +37,9 @@ class ElementSearchVariable extends Behavior
      * @param null $optional
      * @return string
      */
-    public function elementSearch(string $keyword, array $criteria = []): Collection
+    public function elementSearch(string $keyword, array $criteria = []): Array
     {
-        $results = collect();
+        $results = [];
         
         $elementTypes = $criteria['elements'] ?? null;
         
@@ -53,25 +52,25 @@ class ElementSearchVariable extends Behavior
             if (is_null($elementTypes) || (in_array($shortType, $elementTypes) || in_array($elementType, $elementTypes))) {
                 $query = $elementType::find();
                 Craft::configure($query, array_merge(['search' => $keyword, 'orderBy' => 'score'], $criteria));
-                $elements = $query->collect();
-                $results = $results->merge($elements);
+                $elements = $query->all();
+                $results = ArrayHelper::merge($results, $elements);
             }
         }
         
         if (isset($criteria['orderBy'])) {
             if (StringHelper::contains($criteria['orderBy'], 'desc')) {
-                $results = $results->sortByDesc(str_replace(' desc', '', $criteria['orderBy']));
+                ArrayHelper::multisort($results, str_replace(' desc', '', $criteria['orderBy']), SORT_DESC);
             } else {
-                $results = $results->sortBy(str_replace(' asc', '', $criteria['orderBy']));
+                ArrayHelper::multisort($results, str_replace(' asc', '', $criteria['orderBy']), SORT_ASC);
             }
         } else {
-            $results = $results->sortByDesc('searchScore');
+            ArrayHelper::multisort($results, 'searchScore', SORT_DESC);
         }
         
-        $total = $results->count();
+        $total = count($results);
         
         if (isset($criteria['limit'])) {
-            $results = $results->slice(0, $criteria['limit']);
+            $results = array_slice($results, 0, $criteria['limit']);
         }
         
         return $results;
