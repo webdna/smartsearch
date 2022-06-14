@@ -1,0 +1,44 @@
+{
+    "name": "webdna/element-search",
+    "description": "One search to search them all",
+    "type": "craft-plugin",
+    "version": "0.0.1",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "element search"
+    ],
+    "support": {
+        "docs": "https://github.com/webdna/element-search/blob/master/README.md",
+        "issues": "https://github.com/webdna/element-search/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "WebDNA",
+            "homepage": "https://webdna.co.uk"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0|^4.0.0"
+    },
+    "require-dev": {
+      "vlucas/phpdotenv": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "webdna\\elementsearch\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Element Search",
+        "handle": "element-search",
+        "developer": "WebDNA",
+        "developerUrl": "https://webdna.co.uk",
+        "documentationUrl": "https://github.com/webdna/element-search/blob/master/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/webdna/element-search/master/CHANGELOG.md",
+        "class": "webdna\\elementsearch\\ElementSearch"
+    }
+}
