@@ -40,40 +40,6 @@ class ElementSearchVariable extends Behavior
      */
     public function elementSearch(string $keyword, array $criteria = []): Collection
     {
-        $results = collect();
-        
-        $elementTypes = $criteria['elements'] ?? null;
-        
-        unset($criteria['elements']);
-        
-        foreach (Craft::$app->getElements()->getAllElementTypes() as $elementType) {
-            $shortType = explode('\\', $elementType);
-            $shortType = end($shortType);
-            
-            if (is_null($elementTypes) || (in_array($shortType, $elementTypes) || in_array($elementType, $elementTypes))) {
-                $query = $elementType::find();
-                Craft::configure($query, array_merge(['search' => $keyword, 'orderBy' => 'score'], $criteria));
-                $elements = $query->collect();
-                $results = $results->merge($elements);
-            }
-        }
-        
-        if (isset($criteria['orderBy'])) {
-            if (StringHelper::contains($criteria['orderBy'], 'desc')) {
-                $results = $results->sortByDesc(str_replace(' desc', '', $criteria['orderBy']));
-            } else {
-                $results = $results->sortBy(str_replace(' asc', '', $criteria['orderBy']));
-            }
-        } else {
-            $results = $results->sortByDesc('searchScore');
-        }
-        
-        $total = $results->count();
-        
-        if (isset($criteria['limit'])) {
-            $results = $results->slice(0, $criteria['limit']);
-        }
-        
-        return $results;
+        return ElementSearch::$plugin->service->ElementSearch($keyword, $criteria);
     }
 }

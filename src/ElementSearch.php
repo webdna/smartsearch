@@ -11,6 +11,7 @@
 namespace webdna\elementsearch;
 
 use webdna\elementsearch\variables\ElementSearchVariable;
+use webdna\elementsearch\services\ElementSearch as ElementSearchService;
 
 use Craft;
 use craft\base\Plugin;
@@ -68,6 +69,10 @@ class ElementSearch extends Plugin
     {
         parent::init();
         self::$plugin = $this;
+            
+        $this->setComponents([
+            'service' => ElementSearchService::class,
+        ]);
 
         Event::on(
             CraftVariable::class,
