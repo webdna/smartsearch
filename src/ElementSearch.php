@@ -11,7 +11,7 @@
 namespace webdna\elementsearch;
 
 use webdna\elementsearch\variables\ElementSearchVariable;
-use webdna\elementsearch\services\ElementSearch as ElementSearchService;
+use webdna\elementsearch\services\ElementSearchService;
 
 use Craft;
 use craft\base\Plugin;
